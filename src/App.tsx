@@ -7,6 +7,7 @@ export interface PlatformInfo {
   limit: number;
   color: string;
   bgColor: string;
+  description: string;
 }
 
 export const PLATFORM_DETAILS: Record<Platform, PlatformInfo> = {
@@ -15,30 +16,35 @@ export const PLATFORM_DETAILS: Record<Platform, PlatformInfo> = {
     limit: 280,
     color: '#0f1419',
     bgColor: '#e7e7e8',
+    description: 'Short form posts & updates',
   },
   LinkedIn: {
     name: 'LinkedIn',
     limit: 3000,
     color: '#0a66c2',
     bgColor: '#e0f2fe',
+    description: 'Professional networking posts',
   },
   Instagram: {
     name: 'Instagram',
     limit: 2200,
     color: '#d62976',
     bgColor: '#fce7f3',
+    description: 'Photo & video captions',
   },
   Facebook: {
     name: 'Facebook',
     limit: 63206,
     color: '#1877f2',
     bgColor: '#dbeafe',
+    description: 'Long form community posts',
   },
   Threads: {
     name: 'Threads',
     limit: 500,
     color: '#101010',
     bgColor: '#f3f4f6',
+    description: 'Text discussions & thoughts',
   },
 };
 
@@ -117,11 +123,11 @@ function ComposerForm({
     <section className="panel composer-panel">
       <div className="panel-header">
         <div>
-          <p className="eyebrow">Post Composer (TypeScript)</p>
-          <h1>Multi-Platform Post Composer</h1>
+          <p className="eyebrow">Multi-Platform Post Composer</p>
+          <h1>Compose Post for Multiple Platforms</h1>
         </div>
         <p className="panel-copy">
-          Select multiple platforms, check character limits in real time across all selected channels, and save or publish seamlessly.
+          Select all platforms you want to post to simultaneously. Character limits adapt in real time.
         </p>
       </div>
 
@@ -138,7 +144,9 @@ function ComposerForm({
 
         <div className="field field-full">
           <div className="platform-header-row">
-            <span>Target Platforms (Select Multiple)</span>
+            <span>
+              Select Target Platforms ({selectedCount} of {ALL_PLATFORMS.length} selected)
+            </span>
             <div className="platform-quick-actions">
               <button
                 type="button"
@@ -158,38 +166,45 @@ function ComposerForm({
             </div>
           </div>
 
-          <div className="platform-chips-container">
+          <div className="platform-selection-grid">
             {ALL_PLATFORMS.map((platform) => {
               const isSelected = formData.platforms.includes(platform);
               const info = PLATFORM_DETAILS[platform];
               const isExceeded = isSelected && characterCount > info.limit;
 
               return (
-                <button
+                <label
                   key={platform}
-                  type="button"
-                  className={`platform-chip ${isSelected ? 'selected' : ''} ${
+                  className={`platform-checkbox-card ${isSelected ? 'selected' : ''} ${
                     isExceeded ? 'exceeded' : ''
                   }`}
-                  onClick={() => onTogglePlatform(platform)}
                 >
-                  <span
-                    className="chip-indicator"
-                    style={{
-                      backgroundColor: isSelected ? info.color : 'transparent',
-                    }}
+                  <input
+                    type="checkbox"
+                    className="platform-checkbox-input"
+                    checked={isSelected}
+                    onChange={() => onTogglePlatform(platform)}
                   />
-                  <span className="chip-name">{platform}</span>
-                  <span className="chip-limit">({info.limit.toLocaleString()} chars)</span>
-                  {isSelected && <span className="chip-checkmark">✓</span>}
-                </button>
+                  <div className="platform-card-content">
+                    <div className="platform-card-top">
+                      <span
+                        className="platform-color-dot"
+                        style={{ backgroundColor: info.color }}
+                      />
+                      <span className="platform-card-title">{platform}</span>
+                    </div>
+                    <div className="platform-card-limit">
+                      Limit: <strong>{info.limit.toLocaleString()}</strong> chars
+                    </div>
+                  </div>
+                </label>
               );
             })}
           </div>
 
           {selectedCount === 0 && (
             <p className="validation-message warning margin-top-sm">
-              ⚠️ Please select at least one platform to publish or save your draft.
+              ⚠️ Please select at least one platform to proceed.
             </p>
           )}
         </div>
@@ -210,9 +225,9 @@ function ComposerForm({
           {selectedCount > 0 ? (
             <>
               <p className="char-count-text">
-                Characters: <strong>{characterCount}</strong>
+                Current Length: <strong>{characterCount}</strong> chars
                 {strictestLimit !== null && (
-                  <span> / Strictest Limit: <strong>{strictestLimit.toLocaleString()}</strong></span>
+                  <span> (Strictest selected limit: <strong>{strictestLimit.toLocaleString()}</strong>)</span>
                 )}
               </p>
 
@@ -221,18 +236,18 @@ function ComposerForm({
                   ⚠️ Content exceeds limit for:{' '}
                   {exceededPlatforms
                     .map(
-                      (p) => `${p} (${characterCount - PLATFORM_DETAILS[p].limit} over limit)`
+                      (p) => `${p} (${characterCount - PLATFORM_DETAILS[p].limit} chars over)`
                     )
                     .join(', ')}
                 </div>
               ) : (
                 <div className="validation-message success">
-                  ✓ Content fits within all {selectedCount} selected platform limits.
+                  ✓ Ready to post! Content fits all {selectedCount} selected platforms.
                 </div>
               )}
             </>
           ) : (
-            <p className="validation-message">Select platforms above to view character limits.</p>
+            <p className="validation-message">Select one or more platforms above.</p>
           )}
         </div>
 

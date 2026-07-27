@@ -157,12 +157,12 @@ h2 {
   font-weight: 600;
 }
 
-/* Multi-Platform Chip Selector Styles */
+/* Multi-Platform Checkbox Selection Grid */
 .platform-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .platform-quick-actions {
@@ -179,6 +179,7 @@ h2 {
   font-weight: 600;
   font-size: 0.88rem;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .text-link-btn:hover {
@@ -191,65 +192,82 @@ h2 {
   font-size: 0.8rem;
 }
 
-.platform-chips-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.platform-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
 }
 
-.platform-chip {
-  display: inline-flex;
+.platform-checkbox-card {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0.6rem 1rem;
-  border-radius: 999px;
+  gap: 12px;
+  padding: 12px 14px;
   background: var(--surface-strong);
-  border: 1.5px solid var(--border);
-  color: var(--text);
-  font-size: 0.92rem;
-  font-weight: 500;
+  border: 2px solid var(--border);
+  border-radius: 16px;
   cursor: pointer;
   user-select: none;
   transition: all 0.2s ease;
 }
 
-.platform-chip:hover {
-  border-color: rgba(31, 111, 139, 0.4);
-  background: #ffffff;
+.platform-checkbox-card:hover {
+  border-color: rgba(31, 111, 139, 0.5);
+  box-shadow: 0 4px 12px rgba(29, 37, 48, 0.05);
 }
 
-.platform-chip.selected {
+.platform-checkbox-card.selected {
   border-color: var(--accent);
   background: #f0f9ff;
-  box-shadow: 0 2px 8px rgba(31, 111, 139, 0.15);
+  box-shadow: 0 4px 14px rgba(31, 111, 139, 0.12);
 }
 
-.platform-chip.selected.exceeded {
+.platform-checkbox-card.selected.exceeded {
   border-color: var(--warning);
   background: var(--warning-bg);
 }
 
-.chip-indicator {
+.platform-checkbox-input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.platform-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.platform-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.platform-color-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  display: inline-block;
+  flex-shrink: 0;
 }
 
-.chip-limit {
+.platform-card-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.platform-card-limit {
+  font-size: 0.8rem;
   color: var(--muted);
-  font-size: 0.82rem;
 }
 
-.chip-checkmark {
-  color: var(--accent);
-  font-weight: 800;
-  font-size: 0.9rem;
-}
-
-input,
-textarea,
-select {
+input[type="text"],
+textarea {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 18px;
@@ -264,9 +282,8 @@ textarea {
   min-height: 180px;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+input[type="text"]:focus,
+textarea:focus {
   border-color: rgba(31, 111, 139, 0.4);
   box-shadow: 0 0 0 4px rgba(31, 111, 139, 0.12);
 }
