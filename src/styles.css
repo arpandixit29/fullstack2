@@ -184,6 +184,26 @@ body {
   font-weight: 700;
 }
 
+.badge-admin {
+  font-size: 0.6rem;
+  padding: 1px 5px;
+  background: var(--role-admin-bg);
+  color: var(--role-admin);
+  border-radius: 4px;
+  margin-left: auto;
+  font-weight: 700;
+}
+
+.badge-new {
+  font-size: 0.6rem;
+  padding: 1px 5px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border-radius: 4px;
+  margin-left: auto;
+  font-weight: 700;
+}
+
 .perf-action-group {
   display: flex;
   gap: 10px;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LayoutDashboard, FileText, Users, ShieldCheck, Lock, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Calendar, FileText, Users, ShieldCheck, Lock, ChevronRight } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
   const { user, hasPermission } = useAuth();
@@ -19,6 +19,16 @@ export const Sidebar: React.FC = () => {
         >
           <LayoutDashboard size={18} />
           <span>Dashboard Overview</span>
+          <ChevronRight size={14} className="nav-arrow" />
+        </NavLink>
+
+        <NavLink
+          to="/calendar"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <Calendar size={18} />
+          <span>Calendar Scheduler</span>
+          <span className="badge-new">PRO</span>
           <ChevronRight size={14} className="nav-arrow" />
         </NavLink>
 
