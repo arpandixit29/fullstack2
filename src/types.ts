@@ -1,71 +1,54 @@
-export type Platform = 'Twitter/X' | 'LinkedIn' | 'Instagram' | 'Facebook' | 'Threads';
+export type PlatformType = 'twitter' | 'linkedin' | 'facebook' | 'instagram';
 
-export interface PlatformInfo {
-  name: Platform;
-  limit: number;
-  color: string;
-  bgColor: string;
-  description: string;
-}
+export type PostStatus = 'scheduled' | 'published' | 'draft' | 'cancelled';
 
-export const PLATFORM_DETAILS: Record<Platform, PlatformInfo> = {
-  'Twitter/X': {
-    name: 'Twitter/X',
-    limit: 280,
-    color: '#0f1419',
-    bgColor: '#e7e7e8',
-    description: 'Short form posts & updates',
-  },
-  LinkedIn: {
-    name: 'LinkedIn',
-    limit: 3000,
-    color: '#0a66c2',
-    bgColor: '#e0f2fe',
-    description: 'Professional networking posts',
-  },
-  Instagram: {
-    name: 'Instagram',
-    limit: 2200,
-    color: '#d62976',
-    bgColor: '#fce7f3',
-    description: 'Photo & video captions',
-  },
-  Facebook: {
-    name: 'Facebook',
-    limit: 63206,
-    color: '#1877f2',
-    bgColor: '#dbeafe',
-    description: 'Long form community posts',
-  },
-  Threads: {
-    name: 'Threads',
-    limit: 500,
-    color: '#101010',
-    bgColor: '#f3f4f6',
-    description: 'Text discussions & thoughts',
-  },
-};
+export type CalendarViewMode = 'dayGridMonth' | 'timeGridWeek' | 'timeGridDay';
 
-export const ALL_PLATFORMS = Object.keys(PLATFORM_DETAILS) as Platform[];
-
-export interface DraftFormData {
-  title: string;
-  content: string;
-  platforms: Platform[];
-}
-
-export interface Draft {
+export interface ScheduledPost {
   id: string;
   title: string;
   content: string;
-  platforms: Platform[];
-  savedAt: string;
+  platform: PlatformType;
+  start: string; // ISO date string e.g. '2026-08-11T10:00:00'
+  end: string;   // ISO date string e.g. '2026-08-11T11:00:00'
+  status: PostStatus;
+  author: string;
+  color?: string;
+  mediaUrl?: string;
 }
 
-export interface PublishedPost {
-  id: string;
-  title: string;
-  content: string;
-  platforms: Platform[];
-  publishedAt: string;
+export interface FilterState {
+  searchQuery: string;
+  platform: PlatformType | 'all';
+  status: PostStatus | 'all';
+}
+
+export interface PerformanceMetrics {
+  renderCount: number;
+  lastRenderDurationMs: number;
+  totalEventsCount: number;
+}
+
+export interface CalendarContextType {
+  posts: ScheduledPost[];
+  filteredPosts: ScheduledPost[];
+  selectedPost: ScheduledPost | null;
+  filters: FilterState;
+  viewMode: CalendarViewMode;
+  performanceMetrics: PerformanceMetrics;
+  isModalOpen: boolean;
+  modalDefaultDates: { start: string; end: string } | null;
+  
+  // Actions
+  setViewMode: (mode: CalendarViewMode) => void;
+  setFilters: (updater: (prev: FilterState) => FilterState) => void;
+  setSelectedPost: (post: ScheduledPost | null) => void;
+  setIsModalOpen: (open: boolean) => void;
+  openCreateModalWithDates: (start: string, end: string) => void;
+  addPost: (post: Omit<ScheduledPost, 'id'>) => void;
+  updatePost: (id: string, updates: Partial<ScheduledPost>) => void;
+  deletePost: (id: string) => void;
+  movePost: (id: string, newStart: string, newEnd: string) => void;
+  generateBulkPosts: (count?: number) => void;
+  clearAllPosts: () => void;
 }
