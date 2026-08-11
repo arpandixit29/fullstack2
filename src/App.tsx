@@ -7,6 +7,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 
 import { LoginPage } from './pages/LoginPage';
+import { ComposerPage } from './pages/ComposerPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { CalendarPage } from './pages/CalendarPage';
 import { ContentPage } from './pages/ContentPage';
@@ -43,7 +44,8 @@ export default function App() {
           {/* Authenticated Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route element={<AppLayout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<Navigate to="/composer" replace />} />
+              <Route path="/composer" element={<ComposerPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/content" element={<ContentPage />} />

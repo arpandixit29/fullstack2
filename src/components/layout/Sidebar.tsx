@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LayoutDashboard, Calendar, FileText, Users, ShieldCheck, Lock, ChevronRight } from 'lucide-react';
+import { Edit, LayoutDashboard, Calendar, FileText, Users, ShieldCheck, Lock, ChevronRight } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
   const { user, hasPermission } = useAuth();
@@ -13,6 +13,15 @@ export const Sidebar: React.FC = () => {
     <aside className="app-sidebar">
       <div className="sidebar-section-title">MAIN MENU</div>
       <nav className="sidebar-nav">
+        <NavLink
+          to="/composer"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+        >
+          <Edit size={18} />
+          <span>Post Composer</span>
+          <ChevronRight size={14} className="nav-arrow" />
+        </NavLink>
+
         <NavLink
           to="/dashboard"
           className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
