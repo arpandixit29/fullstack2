@@ -16,7 +16,7 @@ export const RoleGuard: React.FC<RoleGuardProps> = ({
   fallback,
   redirect = true,
 }) => {
-  const { hasRole, user } = useAuth();
+  const { hasRole } = useAuth();
 
   const isAuthorized = hasRole(allowedRoles);
 

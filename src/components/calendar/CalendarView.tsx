@@ -4,7 +4,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useCalendar } from '../../context/CalendarContext';
-import { ScheduledPost } from '../../types';
 
 export const CalendarView: React.FC = () => {
   const {
@@ -15,7 +14,7 @@ export const CalendarView: React.FC = () => {
     movePost,
   } = useCalendar();
 
-  const calendarRef = useRef<FullCalendar | null>(null);
+  const calendarRef = useRef<any>(null);
 
   // Transform ScheduledPost domain models into FullCalendar event objects (useMemo for performance)
   const calendarEvents = useMemo(() => {
@@ -106,7 +105,7 @@ export const CalendarView: React.FC = () => {
     <div className="calendar-wrapper-container">
       <FullCalendar
         ref={calendarRef}
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin] as any}
         initialView={viewMode}
         key={viewMode} // Re-bind calendar when view mode changes
         headerToolbar={{

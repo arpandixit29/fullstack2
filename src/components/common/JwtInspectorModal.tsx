@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getRemainingTtl } from '../../services/jwtService';
-import { ShieldCheck, ShieldAlert, Key, RefreshCw, Copy, Check, X, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, ShieldAlert, RefreshCw, Copy, Check, X, AlertTriangle } from 'lucide-react';
 
 interface JwtInspectorModalProps {
   isOpen: boolean;
@@ -9,7 +9,7 @@ interface JwtInspectorModalProps {
 }
 
 export const JwtInspectorModal: React.FC<JwtInspectorModalProps> = ({ isOpen, onClose }) => {
-  const { token, decodedToken, refreshToken, tamperToken, logout, user } = useAuth();
+  const { token, decodedToken, refreshToken, tamperToken, user } = useAuth();
   const [activeTab, setActiveTab] = useState<'overview' | 'header' | 'payload' | 'raw'>('overview');
   const [copied, setCopied] = useState(false);
   const [ttlInfo, setTtlInfo] = useState({ minutes: 0, seconds: 0, text: '0m 00s' });
@@ -147,7 +147,7 @@ export const JwtInspectorModal: React.FC<JwtInspectorModalProps> = ({ isOpen, on
               <div className="permissions-chip-box">
                 <label>Active Granted Permissions (from JWT payload):</label>
                 <div className="chips-container">
-                  {user?.permissions.map((p) => (
+                  {user?.permissions.map((p: string) => (
                     <span key={p} className="perm-chip">
                       {p}
                     </span>

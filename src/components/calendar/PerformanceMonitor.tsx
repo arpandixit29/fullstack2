@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCalendar } from '../../context/CalendarContext';
-import { Activity, Zap, Layers, RefreshCw, Trash2, Cpu, CheckCircle2 } from 'lucide-react';
+import { Zap, Trash2, Cpu, CheckCircle2 } from 'lucide-react';
 
 export const PerformanceMonitor: React.FC = () => {
   const { performanceMetrics, generateBulkPosts, clearAllPosts } = useCalendar();

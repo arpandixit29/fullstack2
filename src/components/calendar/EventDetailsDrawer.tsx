@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCalendar } from '../../context/CalendarContext';
-import { Edit3, Trash2, Calendar, Clock, User, Share2, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { Edit3, Trash2, Calendar, Clock, User, X, CheckCircle } from 'lucide-react';
 
 export const EventDetailsDrawer: React.FC = () => {
   const { selectedPost, setSelectedPost, setIsModalOpen, deletePost, updatePost } = useCalendar();

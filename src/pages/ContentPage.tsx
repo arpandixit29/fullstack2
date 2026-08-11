@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { PermissionGuard } from '../components/common/PermissionGuard';
 import { INITIAL_CONTENT_ITEMS, addAuditLog } from '../api/authApi';
 import { ContentItem } from '../types';
-import { Plus, Edit3, Trash2, CheckCircle2, Search, Filter, Lock, Eye, Sparkles, X } from 'lucide-react';
+import { Plus, Edit3, Trash2, Search, Filter, Lock, Eye, Sparkles, X } from 'lucide-react';
 
 export const ContentPage: React.FC = () => {
   const { user, hasPermission } = useAuth();

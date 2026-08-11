@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { PermissionGuard } from '../components/common/PermissionGuard';
 import { Link } from 'react-router-dom';
-import { Shield, Key, Users, FileText, Activity, Lock, ArrowUpRight, Check, X, ShieldAlert } from 'lucide-react';
+import { Shield, Key, Users, FileText, Activity, Check, X, ShieldAlert } from 'lucide-react';
 import { getRemainingTtl } from '../services/jwtService';
 
 export const DashboardPage: React.FC = () => {

@@ -1,8 +1,13 @@
-import { AuditLog, ContentItem, Role, User } from '../types';
+import { AuditLog, ContentItem, User } from '../types';
 import { createJwtToken, decodeJwtToken } from '../services/jwtService';
 
+export interface MockUserRecord extends Omit<User, 'status'> {
+  status: 'active' | 'inactive';
+  passwordHash: string;
+}
+
 // Mock Users Database
-export const MOCK_USERS: (User & { passwordHash: string })[] = [
+export const MOCK_USERS: MockUserRecord[] = [
   {
     id: 'usr_admin_01',
     email: 'admin@system.io',

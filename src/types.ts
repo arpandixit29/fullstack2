@@ -1,3 +1,101 @@
+// ==========================================
+// JWT Authentication & RBAC Types
+// ==========================================
+
+export type Role = 'admin' | 'editor' | 'viewer';
+
+export type Permission =
+  | 'read:all'
+  | 'create:content'
+  | 'edit:content'
+  | 'delete:content'
+  | 'publish:content'
+  | 'manage:users'
+  | 'view:analytics'
+  | 'manage:settings'
+  | 'audit:logs';
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: Role;
+  permissions: Permission[];
+  avatarUrl?: string;
+  title?: string;
+  status: 'active' | 'inactive';
+}
+
+export interface JwtHeader {
+  alg: string;
+  typ: string;
+}
+
+export interface JwtPayload {
+  sub: string;
+  email: string;
+  name: string;
+  role: Role;
+  permissions: Permission[];
+  iat: number;
+  exp: number;
+  iss: string;
+}
+
+export interface DecodedJwtToken {
+  header: JwtHeader;
+  payload: JwtPayload;
+  signature: string;
+  rawToken: string;
+  isExpired: boolean;
+  isValid: boolean;
+}
+
+export interface ContentItem {
+  id: string;
+  title: string;
+  summary: string;
+  content: string;
+  author: string;
+  authorRole: Role;
+  status: 'published' | 'draft' | 'under_review';
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AuditLog {
+  id: string;
+  timestamp: string;
+  userId: string;
+  userName: string;
+  userRole: Role;
+  action: string;
+  target: string;
+  status: 'success' | 'warning' | 'denied';
+  details: string;
+  ipAddress: string;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  token: string | null;
+  decodedToken: DecodedJwtToken | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (email: string, pass: string) => Promise<{ success: boolean; error?: string }>;
+  logout: (reason?: string) => void;
+  hasPermission: (permission: Permission) => boolean;
+  hasRole: (roles: Role | Role[]) => boolean;
+  refreshToken: () => Promise<void>;
+  tamperToken: () => void;
+}
+
+
+// ==========================================
+// Calendar & Post Scheduling Types
+// ==========================================
+
 export type PlatformType = 'twitter' | 'linkedin' | 'facebook' | 'instagram';
 
 export type PostStatus = 'scheduled' | 'published' | 'draft' | 'cancelled';

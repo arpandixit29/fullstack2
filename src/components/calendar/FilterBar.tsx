@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCalendar } from '../../context/CalendarContext';
-import { CalendarViewMode, PlatformType, PostStatus } from '../../types';
+import { PlatformType, PostStatus } from '../../types';
 import { Search, Plus, Calendar, Clock, Grid, Filter } from 'lucide-react';
 
 export const FilterBar: React.FC = () => {
@@ -11,7 +11,6 @@ export const FilterBar: React.FC = () => {
     setViewMode,
     setIsModalOpen,
     setSelectedPost,
-    filteredPosts,
     posts,
   } = useCalendar();
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCalendar } from '../../context/CalendarContext';
 import { PlatformType, PostStatus } from '../../types';
-import { Calendar, Clock, Share2, User, Sparkles, X, AlignLeft } from 'lucide-react';
+import { Calendar, Clock, Share2, User, Sparkles, X } from 'lucide-react';
 
 export const EventModal: React.FC = () => {
   const {

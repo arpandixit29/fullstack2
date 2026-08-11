@@ -2,12 +2,24 @@ import React, { useState } from 'react';
 import { MOCK_USERS, addAuditLog } from '../api/authApi';
 import { useAuth } from '../context/AuthContext';
 import { User, Role } from '../types';
-import { Users, Shield, UserCheck, UserX, Settings, Edit2, X, Check, Search, ShieldAlert } from 'lucide-react';
+import { Shield, UserCheck, UserX, Settings, Edit2, X, Search } from 'lucide-react';
 
 export const UserManagementPage: React.FC = () => {
   const { user: currentUser } = useAuth();
-  const [userList, setUserList] = useState<User[]>(
-    MOCK_USERS.map(({ passwordHash, ...u }) => u)
+  const [userList, setUserList] = useState<User[]>(() =>
+    MOCK_USERS.map(({ passwordHash, ...u }) => {
+      const userObj: User = {
+        id: u.id,
+        email: u.email,
+        name: u.name,
+        role: u.role,
+        permissions: u.permissions,
+        avatarUrl: u.avatarUrl,
+        title: u.title,
+        status: u.status === 'inactive' ? 'inactive' : 'active',
+      };
+      return userObj;
+    })
   );
   const [searchTerm, setSearchTerm] = useState('');
   const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -64,7 +76,7 @@ export const UserManagementPage: React.FC = () => {
   };
 
   const toggleUserStatus = (targetUser: User) => {
-    const newStatus = targetUser.status === 'active' ? 'inactive' : 'active';
+    const newStatus: 'active' | 'inactive' = targetUser.status === 'active' ? 'inactive' : 'active';
     const updated = userList.map((u) => (u.id === targetUser.id ? { ...u, status: newStatus } : u));
     setUserList(updated);
 

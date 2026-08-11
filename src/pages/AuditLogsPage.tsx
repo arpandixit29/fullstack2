@@ -4,7 +4,7 @@ import { AuditLog } from '../types';
 import { ShieldCheck, ShieldAlert, AlertTriangle, Search, Filter, Terminal } from 'lucide-react';
 
 export const AuditLogsPage: React.FC = () => {
-  const [logs, setLogs] = useState<AuditLog[]>(INITIAL_AUDIT_LOGS);
+  const [logs] = useState<AuditLog[]>(INITIAL_AUDIT_LOGS);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
