@@ -1,9 +1,49 @@
-import React, { useMemo, useCallback, useRef } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useCalendar } from '../../context/CalendarContext';
+
+interface EventClickInfo {
+  event: {
+    id: string;
+    title: string;
+  };
+}
+
+interface DateSelectInfo {
+  startStr: string;
+  endStr: string;
+}
+
+interface EventDropInfo {
+  event: {
+    id: string;
+    start: Date | null;
+    end: Date | null;
+  };
+}
+
+interface EventResizeInfo {
+  event: {
+    id: string;
+    start: Date;
+    end: Date;
+  };
+}
+
+interface EventContentInfo {
+  event: {
+    title: string;
+    extendedProps: {
+      platform: string;
+      status: string;
+      author: string;
+      content?: string;
+    };
+  };
+}
 
 export const CalendarView: React.FC = () => {
   const {
@@ -13,8 +53,6 @@ export const CalendarView: React.FC = () => {
     openCreateModalWithDates,
     movePost,
   } = useCalendar();
-
-  const calendarRef = useRef<any>(null);
 
   // Transform ScheduledPost domain models into FullCalendar event objects (useMemo for performance)
   const calendarEvents = useMemo(() => {
@@ -36,7 +74,7 @@ export const CalendarView: React.FC = () => {
 
   // Stable event handlers using useCallback
   const handleEventClick = useCallback(
-    (clickInfo: any) => {
+    (clickInfo: EventClickInfo) => {
       const postId = clickInfo.event.id;
       const foundPost = filteredPosts.find((p) => p.id === postId);
       if (foundPost) {
@@ -47,7 +85,7 @@ export const CalendarView: React.FC = () => {
   );
 
   const handleDateSelect = useCallback(
-    (selectInfo: any) => {
+    (selectInfo: DateSelectInfo) => {
       const startStr = selectInfo.startStr.includes('T')
         ? selectInfo.startStr.substring(0, 19)
         : `${selectInfo.startStr}T09:00:00`;
@@ -61,12 +99,14 @@ export const CalendarView: React.FC = () => {
   );
 
   const handleEventDrop = useCallback(
-    (dropInfo: any) => {
+    (dropInfo: EventDropInfo) => {
       const { event } = dropInfo;
       const newStart = event.start ? event.start.toISOString().substring(0, 19) : '';
       const newEnd = event.end
         ? event.end.toISOString().substring(0, 19)
-        : new Date(event.start.getTime() + 3600000).toISOString().substring(0, 19);
+        : event.start
+        ? new Date(event.start.getTime() + 3600000).toISOString().substring(0, 19)
+        : '';
 
       movePost(event.id, newStart, newEnd);
     },
@@ -74,7 +114,7 @@ export const CalendarView: React.FC = () => {
   );
 
   const handleEventResize = useCallback(
-    (resizeInfo: any) => {
+    (resizeInfo: EventResizeInfo) => {
       const { event } = resizeInfo;
       const newStart = event.start.toISOString().substring(0, 19);
       const newEnd = event.end.toISOString().substring(0, 19);
@@ -85,7 +125,7 @@ export const CalendarView: React.FC = () => {
   );
 
   // Custom Event Element Content Renderer
-  const renderEventContent = useCallback((eventInfo: any) => {
+  const renderEventContent = useCallback((eventInfo: EventContentInfo) => {
     const { platform, status, author } = eventInfo.event.extendedProps;
     const title = eventInfo.event.title;
 
@@ -104,7 +144,6 @@ export const CalendarView: React.FC = () => {
   return (
     <div className="calendar-wrapper-container">
       <FullCalendar
-        ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin] as any}
         initialView={viewMode}
         key={viewMode} // Re-bind calendar when view mode changes
@@ -119,11 +158,11 @@ export const CalendarView: React.FC = () => {
         dayMaxEvents={true}
         weekends={true}
         events={calendarEvents}
-        eventClick={handleEventClick}
-        select={handleDateSelect}
-        eventDrop={handleEventDrop}
-        eventResize={handleEventResize}
-        eventContent={renderEventContent}
+        eventClick={handleEventClick as any}
+        select={handleDateSelect as any}
+        eventDrop={handleEventDrop as any}
+        eventResize={handleEventResize as any}
+        eventContent={renderEventContent as any}
         height="100%"
         slotMinTime="07:00:00"
         slotMaxTime="22:00:00"
