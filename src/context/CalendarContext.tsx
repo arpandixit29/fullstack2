@@ -117,7 +117,7 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     const startTime = performance.now();
-    const result = posts.filter((post) => {
+    posts.filter((post) => {
       const matchesSearch =
         filters.searchQuery === '' ||
         post.title.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||

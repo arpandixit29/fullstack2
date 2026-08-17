@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useMemo, useCallback, useRef, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -55,7 +55,8 @@ export const CalendarView: React.FC = () => {
   } = useCalendar();
 
   // Ref to FullCalendar API — lets us change views without remounting the whole calendar
-  const calendarRef = useRef<FullCalendar>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const calendarRef = useRef<any>(null);
 
   // When viewMode changes from FilterBar, use the FullCalendar API to switch view
   // This avoids the expensive key={viewMode} remount pattern that caused the blank screen
