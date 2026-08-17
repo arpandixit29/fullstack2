@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
-import App from '../App';
+import { CalendarPage } from '../pages/CalendarPage';
 
 // Mock FullCalendar for JSDOM unit tests to avoid ES class constructor transpilation mismatch in JSDOM
 vi.mock('@fullcalendar/react', () => ({
@@ -25,15 +25,15 @@ vi.mock('@fullcalendar/react', () => ({
 
 describe('Interactive Calendar Scheduling UI & Components', () => {
   it('renders application navbar and performance monitor widget', () => {
-    render(<App />);
+    render(<CalendarPage />);
 
-    expect(screen.getByText('Chronos Calendar Engine')).toBeInTheDocument();
+    expect(screen.getByText('Interactive Calendar Scheduler')).toBeInTheDocument();
     expect(screen.getByText('Render Performance Diagnostic')).toBeInTheDocument();
     expect(screen.getByText('Total Events Loaded:')).toBeInTheDocument();
   });
 
   it('renders filter bar buttons and view mode switcher', () => {
-    render(<App />);
+    render(<CalendarPage />);
 
     expect(screen.getByText(/All Platforms/i)).toBeInTheDocument();
     expect(screen.getByText('Twitter')).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe('Interactive Calendar Scheduling UI & Components', () => {
   });
 
   it('opens post creation modal when clicking "New Post"', () => {
-    render(<App />);
+    render(<CalendarPage />);
 
     const newPostBtn = screen.getByText('New Post');
     fireEvent.click(newPostBtn);
@@ -54,7 +54,7 @@ describe('Interactive Calendar Scheduling UI & Components', () => {
   });
 
   it('filters posts when platform button is clicked', () => {
-    render(<App />);
+    render(<CalendarPage />);
 
     const twitterBtn = screen.getByText('Twitter');
     fireEvent.click(twitterBtn);
@@ -63,7 +63,7 @@ describe('Interactive Calendar Scheduling UI & Components', () => {
   });
 
   it('generates 500+ bulk events when clicking performance test button', () => {
-    render(<App />);
+    render(<CalendarPage />);
 
     const bulkBtn = screen.getByText('Generate 500+ Bulk Events');
     fireEvent.click(bulkBtn);

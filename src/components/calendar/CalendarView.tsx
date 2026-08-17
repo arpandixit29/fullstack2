@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+﻿import React, { useMemo, useCallback, useRef, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -53,6 +53,18 @@ export const CalendarView: React.FC = () => {
     openCreateModalWithDates,
     movePost,
   } = useCalendar();
+
+  // Ref to FullCalendar API — lets us change views without remounting the whole calendar
+  const calendarRef = useRef<FullCalendar>(null);
+
+  // When viewMode changes from FilterBar, use the FullCalendar API to switch view
+  // This avoids the expensive key={viewMode} remount pattern that caused the blank screen
+  useEffect(() => {
+    const api = calendarRef.current?.getApi();
+    if (api && api.view.type !== viewMode) {
+      api.changeView(viewMode);
+    }
+  }, [viewMode]);
 
   // Transform ScheduledPost domain models into FullCalendar event objects (useMemo for performance)
   const calendarEvents = useMemo(() => {
@@ -144,9 +156,9 @@ export const CalendarView: React.FC = () => {
   return (
     <div className="calendar-wrapper-container">
       <FullCalendar
+        ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin] as any}
         initialView={viewMode}
-        key={viewMode} // Re-bind calendar when view mode changes
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
@@ -166,7 +178,9 @@ export const CalendarView: React.FC = () => {
         height="100%"
         slotMinTime="07:00:00"
         slotMaxTime="22:00:00"
-        allDaySlot={false}
+        allDaySlot={true}
+        nowIndicator={true}
+        scrollTime={`${new Date().getHours().toString().padStart(2, '0')}:00:00`}
       />
     </div>
   );

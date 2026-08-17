@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { JwtInspectorModal } from '../common/JwtInspectorModal';
-import { Shield, Key, LogOut, ShieldAlert, CheckCircle2, User as UserIcon } from 'lucide-react';
+import { Shield, Key, LogOut, ShieldAlert, CheckCircle2, User as UserIcon, Sun, Moon } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const { user, decodedToken, logout } = useAuth();
   const [isInspectorOpen, setIsInspectorOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    return (localStorage.getItem('app-theme') as 'light' | 'dark') || 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('app-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   const isValid = decodedToken?.isValid ?? false;
 
@@ -23,6 +35,16 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div className="navbar-right">
+          {/* Theme Toggle Button */}
+          <button
+            className="theme-toggle-btn"
+            onClick={toggleTheme}
+            title={`Switch to ${theme === 'light' ? 'Dark' : 'Bright Light'} Mode`}
+          >
+            {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+            <span className="theme-toggle-text">{theme === 'light' ? 'Dark Mode' : 'Bright Mode'}</span>
+          </button>
+
           {/* JWT Token Status Pill (Clickable Inspector Trigger) */}
           <button
             className={`jwt-status-btn ${isValid ? 'status-valid' : 'status-invalid'}`}

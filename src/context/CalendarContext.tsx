@@ -101,9 +101,7 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // Memoized expensive calculation: filtering posts based on query, platform, and status
   const filteredPosts = useMemo(() => {
-    const startTime = performance.now();
-
-    const result = posts.filter((post) => {
+    return posts.filter((post) => {
       const matchesSearch =
         filters.searchQuery === '' ||
         post.title.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
@@ -115,11 +113,22 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       return matchesSearch && matchesPlatform && matchesStatus;
     });
+  }, [posts, filters]);
 
+  useEffect(() => {
+    const startTime = performance.now();
+    const result = posts.filter((post) => {
+      const matchesSearch =
+        filters.searchQuery === '' ||
+        post.title.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+        post.content.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+        post.author.toLowerCase().includes(filters.searchQuery.toLowerCase());
+      const matchesPlatform = filters.platform === 'all' || post.platform === filters.platform;
+      const matchesStatus = filters.status === 'all' || post.status === filters.status;
+      return matchesSearch && matchesPlatform && matchesStatus;
+    });
     const endTime = performance.now();
     setLastRenderDurationMs(Number((endTime - startTime).toFixed(2)));
-
-    return result;
   }, [posts, filters]);
 
   // Memoized action handlers (useCallback)
